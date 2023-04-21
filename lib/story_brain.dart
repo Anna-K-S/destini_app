@@ -1,7 +1,9 @@
 import 'story.dart';
 
+const _initialStoryNumber = 0;
+
 class StoryBrain {
-  int _storyNumber = 0;
+  int _storyNumber = _initialStoryNumber;
 
   final List<Story> _storyData = [
     Story(
@@ -41,69 +43,29 @@ class StoryBrain {
 
   String getChoice2() => _storyData[_storyNumber].choice2;
 
-  void nextStory(int choiceNumber) {
-    //When user is on story0 and they chose choice1, the story should progress to story2.
-    if (choiceNumber == 1 && _storyNumber == 0) {
-      _storyNumber = 2;
-    } else if (choiceNumber == 2 && _storyNumber == 0) {
-      _storyNumber = 1;
-    } else if (choiceNumber == 1 && _storyNumber == 1) {
-      _storyNumber = 2;
-    } else if (choiceNumber == 2 && _storyNumber == 1) {
-      _storyNumber = 3;
-    } else if (choiceNumber == 1 && _storyNumber == 2) {
-      _storyNumber = 5;
-    } else if (choiceNumber == 2 && _storyNumber == 2) {
-      _storyNumber = 4;
-    } else if (_storyNumber == 3 || _storyNumber == 4 || _storyNumber == 5) {
-      restart();
+  //When user is on story0 and they chose choice1, the story should progress to story2.
+  void nextStory(int choiceNumber) =>
+      _storyNumber = _getStoryNumber(choiceNumber);
+
+  int _getStoryNumber(int choiceNumber) {
+    if (choiceNumber == 1 && _storyNumber == 0 || _storyNumber == 1) return 2;
+
+    if (choiceNumber == 2 && _storyNumber == 0) return 1;
+
+    if (choiceNumber == 2 && _storyNumber == 1) return _storyNumber = 3;
+
+    if (choiceNumber == 1 && _storyNumber == 2) return _storyNumber = 5;
+
+    if (choiceNumber == 2 && _storyNumber == 2) return _storyNumber = 4;
+
+    if (_storyNumber == 3 || _storyNumber == 4 || _storyNumber == 5) {
+      return _initialStoryNumber;
     }
+
+    return _storyNumber;
   }
 
-  void restart() {
-    _storyNumber = 0;
-  }
-
-  bool buttonShouldBeVisible() {
-    //You could also just check if (_storyNumber < 3)
-    if (_storyNumber == 0 || _storyNumber == 1 || _storyNumber == 2) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+      //You could also just check if (_storyNumber < 3)
+  bool buttonShouldBeVisible() =>
+      (_storyNumber == 0 || _storyNumber == 1 || _storyNumber == 2);
 }
-
-// int _storyNumber = 0;
-
-// void nextStory(int choiceNumber) {
-//   //When user is on story0 and they chose choice1, the story should progress to story2.
-//   if (choiceNumber == 1 && _storyNumber == 0) {
-//     _storyNumber = 2;
-//   } else if (choiceNumber == 2 && _storyNumber == 0) {
-//     _storyNumber = 1;
-//   } else if (choiceNumber == 1 && _storyNumber == 1) {
-//     _storyNumber = 2;
-//   } else if (choiceNumber == 2 && _storyNumber == 1) {
-//     _storyNumber = 3;
-//   } else if (choiceNumber == 1 && _storyNumber == 2) {
-//     _storyNumber = 5;
-//   } else if (choiceNumber == 2 && _storyNumber == 2) {
-//     _storyNumber = 4;
-//   } else if (_storyNumber == 3 || _storyNumber == 4 || _storyNumber == 5) {
-//     restart();
-//   }
-// }
-
-// void restart() {
-//   _storyNumber = 0;
-// }
-
-// bool buttonShouldBeVisible() {
-//   //You could also just check if (_storyNumber < 3)
-//   if (_storyNumber == 0 || _storyNumber == 1 || _storyNumber == 2) {
-//     return true;
-//   } else {
-//     return false;
-//   }
-// }
